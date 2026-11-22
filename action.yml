@@ -1,0 +1,67 @@
+name: "MaxoPerf Load Test"
+description: "Keep load & performance tests in git: sync .maxoperf/tests/*.yml to MaxoPerf, run them on CI or after deploy, and gate the job on the verdict."
+author: "MaxoPerf"
+branding:
+  icon: "activity"
+  color: "yellow"
+inputs:
+  api-key:
+    description: "MaxoPerf API key (mpak_…) — pass via secrets"
+    required: true
+  account-id:
+    description: "MaxoPerf account id (X-Account-Id)"
+    required: true
+  project-id:
+    description: "Default MaxoPerf project for test files without projectId"
+    required: false
+  command:
+    description: "run | push"
+    required: false
+    default: "run"
+  tests:
+    description: "Test file glob(s), newline-separated; a single path syncs/runs one test"
+    required: false
+    default: ".maxoperf/tests/*.{yml,yaml}"
+  config-overrides:
+    description: "Per-run config values, one KEY=VALUE per line (e.g. TARGET_URL=…)"
+    required: false
+  wait:
+    description: "Wait for runs to finish"
+    required: false
+    default: "true"
+  fail-on:
+    description: "criteria | never"
+    required: false
+    default: "criteria"
+  timeout-minutes:
+    description: "Max minutes to wait per run"
+    required: false
+    default: "60"
+  pr-comment:
+    description: "Post/update one sticky PR comment with results"
+    required: false
+    default: "false"
+  github-token:
+    description: "Token for the PR comment"
+    required: false
+    default: "${{ github.token }}"
+  api-base:
+    description: "MaxoPerf API origin"
+    required: false
+    default: "https://app.maxoperf.com"
+outputs:
+  results:
+    description: "JSON array: name, testId, runId, status, passed, reportUrl"
+  test-id:
+    description: "First test id"
+  run-id:
+    description: "First run id"
+  status:
+    description: "First run terminal status"
+  report-url:
+    description: "First run report link"
+  passed:
+    description: "true when every run passed"
+runs:
+  using: "node24"
+  main: "dist/index.js"
