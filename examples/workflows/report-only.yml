@@ -1,0 +1,21 @@
+# Scenario: report-only. Run the tests and show results in the job summary and PR comment, but never fail the job,
+# even when failure criteria fail. Good for rolling a gate out before enforcing it.
+name: perf-report-only
+on:
+  pull_request:
+permissions:
+  contents: read
+  pull-requests: write
+jobs:
+  load-test:
+    if: github.event.pull_request.head.repo.fork != true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: MaxoPerf/github-action@v1
+        with:
+          api-key: ${{ secrets.MAXOPERF_API_KEY }}
+          account-id: ${{ vars.MAXOPERF_ACCOUNT_ID }}
+          project-id: ${{ vars.MAXOPERF_PROJECT_ID }}
+          fail-on: never
+          pr-comment: true

@@ -1,0 +1,11 @@
+# Assets are files uploaded with the test (paths are repo-root-relative); unlisted files are removed on sync.
+version: 1
+name: "Example k6 with CSV asset"
+engineKind: k6
+entrypoint: examples/tests/scripts/csv-users.js
+assets:
+  - examples/tests/scripts/users.csv
+loadProfile: { virtualUsers: 25, agentCount: 1, rampUpSeconds: 5, durationSeconds: 30, maxVirtualUsersPerRunner: 25 }
+locationPlan: { rows: [{ kind: managed, cloudProvider: aws, region: us-east-1, runnerCount: 1, weight: 1 }] }
+tags: ["example", "data"]
+config: ["TARGET_URL"]

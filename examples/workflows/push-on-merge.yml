@@ -1,0 +1,22 @@
+# Scenario: keep MaxoPerf in sync with git. Push (sync) test files on merge to main; nothing is run.
+# Only runs when a test file or its scripts change.
+name: perf-push-tests
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.maxoperf/**'
+      - 'perf/**'
+permissions:
+  contents: read
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: MaxoPerf/github-action@v1
+        with:
+          api-key: ${{ secrets.MAXOPERF_API_KEY }}
+          account-id: ${{ vars.MAXOPERF_ACCOUNT_ID }}
+          project-id: ${{ vars.MAXOPERF_PROJECT_ID }}
+          command: push

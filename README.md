@@ -11,13 +11,20 @@ Full guide: <https://maxoperf.com/docs/integrations/github-actions/>
 Commit a test file, `.maxoperf/tests/checkout.yml`:
 
 ```yaml
-name: "Checkout soak"          # stable identity: the sync key
-projectId: "prj-0123456789"
-engineKind: "taurus"
-entrypoint: "perf/checkout.yml" # path relative to the repo root
-criteria:
+version: 1
+name: "Checkout soak"                    # stable identity: the sync key (unique per project)
+projectId: "prj-0123456789"              # optional when the project-id input is set
+engineKind: "k6"
+entrypoint: "perf/checkout/script.js"    # path relative to the repo root
+loadProfile: { virtualUsers: 25, agentCount: 1, rampUpSeconds: 30, durationSeconds: 300, maxVirtualUsersPerRunner: 25 }
+locationPlan:
+  rows: [{ kind: managed, cloudProvider: aws, region: us-east-1, runnerCount: 1, weight: 1 }]
+failureCriteria:
   - { subject: "p95", condition: ">", threshold: 800, unit: "ms" }
+config: ["TARGET_URL"]                   # bound workspace config value; override per run with config-overrides
 ```
+
+More complete test files and every workflow scenario: [`examples/`](examples/).
 
 Add a workflow:
 
@@ -58,6 +65,11 @@ jobs:
 ```
 
 Vercel and other hosts that send a `repository_dispatch` use `TARGET_URL=${{ github.event.client_payload.url }}`.
+
+## Examples
+
+Complete workflows (PR gate, after deploy, nightly, matrix, reusable, and more) and test files are in
+[`examples/`](examples/README.md).
 
 ## Inputs
 

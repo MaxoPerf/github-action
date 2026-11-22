@@ -1,0 +1,16 @@
+# Scenario: call the reusable workflow (reusable-workflow.yml) from another workflow or repo.
+# In another repo, use `MaxoPerf/<shared-repo>/.github/workflows/reusable-workflow.yml@main` style references.
+name: perf-caller
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  perf:
+    uses: ./.github/workflows/perf-reusable.yml # the reusable workflow, saved under this name
+    with:
+      account-id: ${{ vars.MAXOPERF_ACCOUNT_ID }}
+      project-id: ${{ vars.MAXOPERF_PROJECT_ID }}
+      target-url: https://staging.example.com
+    secrets:
+      api-key: ${{ secrets.MAXOPERF_API_KEY }}

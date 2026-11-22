@@ -1,0 +1,18 @@
+# Scenario: point the action at a different MaxoPerf API origin (a dedicated or self-hosted deployment).
+# The default is https://app.maxoperf.com; most users never set this.
+name: perf-custom-api-base
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  load-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: MaxoPerf/github-action@v1
+        with:
+          api-key: ${{ secrets.MAXOPERF_API_KEY }}
+          account-id: ${{ vars.MAXOPERF_ACCOUNT_ID }}
+          project-id: ${{ vars.MAXOPERF_PROJECT_ID }}
+          api-base: https://maxoperf.example.com

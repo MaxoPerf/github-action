@@ -1,0 +1,22 @@
+# Scenario: several per-run config values. One KEY=VALUE per line; each key must be a config value bound by the
+# test file (`config:`). Overrides are stored on the run and visible via the API: never put tokens here, bind
+# workspace secrets in the test file instead.
+name: perf-multiple-overrides
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  load-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: MaxoPerf/github-action@v1
+        with:
+          api-key: ${{ secrets.MAXOPERF_API_KEY }}
+          account-id: ${{ vars.MAXOPERF_ACCOUNT_ID }}
+          project-id: ${{ vars.MAXOPERF_PROJECT_ID }}
+          config-overrides: |
+            TARGET_URL=https://staging.example.com
+            API_VERSION=v2
+            RELEASE=${{ github.sha }}

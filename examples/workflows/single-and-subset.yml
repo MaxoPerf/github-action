@@ -1,0 +1,30 @@
+# Scenario: run one test file, or a chosen subset, instead of the default `.maxoperf/tests/*.{yml,yaml}`.
+# `tests` takes newline-separated globs; a single path runs one test.
+name: perf-single-and-subset
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  one-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: MaxoPerf/github-action@v1
+        with:
+          api-key: ${{ secrets.MAXOPERF_API_KEY }}
+          account-id: ${{ vars.MAXOPERF_ACCOUNT_ID }}
+          project-id: ${{ vars.MAXOPERF_PROJECT_ID }}
+          tests: .maxoperf/tests/checkout.yml
+  subset:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: MaxoPerf/github-action@v1
+        with:
+          api-key: ${{ secrets.MAXOPERF_API_KEY }}
+          account-id: ${{ vars.MAXOPERF_ACCOUNT_ID }}
+          project-id: ${{ vars.MAXOPERF_PROJECT_ID }}
+          tests: |
+            .maxoperf/tests/smoke-*.yml
+            .maxoperf/tests/api/*.yml

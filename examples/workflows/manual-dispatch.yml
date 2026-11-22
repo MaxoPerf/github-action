@@ -1,0 +1,27 @@
+# Scenario: run on demand from the Actions tab (or `gh workflow run`), choosing the target and the tests.
+name: perf-manual
+on:
+  workflow_dispatch:
+    inputs:
+      target_url:
+        description: Base URL to test
+        required: true
+        default: https://staging.example.com
+      tests:
+        description: Test file glob(s), newline-separated
+        required: false
+        default: .maxoperf/tests/*.yml
+permissions:
+  contents: read
+jobs:
+  load-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: MaxoPerf/github-action@v1
+        with:
+          api-key: ${{ secrets.MAXOPERF_API_KEY }}
+          account-id: ${{ vars.MAXOPERF_ACCOUNT_ID }}
+          project-id: ${{ vars.MAXOPERF_PROJECT_ID }}
+          tests: ${{ inputs.tests }}
+          config-overrides: TARGET_URL=${{ inputs.target_url }}

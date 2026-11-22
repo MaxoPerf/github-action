@@ -1,0 +1,24 @@
+# Scenario: monorepo. Run the performance tests only when the tests or the service they exercise change.
+name: perf-monorepo
+on:
+  pull_request:
+    paths:
+      - '.maxoperf/**'
+      - 'perf/**'
+      - 'services/checkout/**'
+permissions:
+  contents: read
+  pull-requests: write
+jobs:
+  load-test:
+    if: github.event.pull_request.head.repo.fork != true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: MaxoPerf/github-action@v1
+        with:
+          api-key: ${{ secrets.MAXOPERF_API_KEY }}
+          account-id: ${{ vars.MAXOPERF_ACCOUNT_ID }}
+          project-id: ${{ vars.MAXOPERF_PROJECT_ID }}
+          tests: .maxoperf/tests/checkout-*.yml
+          pr-comment: true

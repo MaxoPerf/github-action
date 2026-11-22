@@ -1,0 +1,21 @@
+# Scenario: nightly regression / soak run on a schedule, also startable by hand.
+# Scheduled workflows run on the default branch only.
+name: perf-nightly
+on:
+  schedule:
+    - cron: '17 2 * * *' # 02:17 UTC daily
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  soak:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: MaxoPerf/github-action@v1
+        with:
+          api-key: ${{ secrets.MAXOPERF_API_KEY }}
+          account-id: ${{ vars.MAXOPERF_ACCOUNT_ID }}
+          project-id: ${{ vars.MAXOPERF_PROJECT_ID }}
+          tests: .maxoperf/tests/soak-*.yml
+          timeout-minutes: '180' # soak runs are long; the default is 60

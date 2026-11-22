@@ -1,0 +1,19 @@
+# Scenario: fire and forget. Start the runs and return immediately (wait: false); results are in the MaxoPerf console.
+# There is no verdict to gate on, so the run status/passed outputs are not final here.
+name: perf-fire-and-forget
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  start:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: MaxoPerf/github-action@v1
+        with:
+          api-key: ${{ secrets.MAXOPERF_API_KEY }}
+          account-id: ${{ vars.MAXOPERF_ACCOUNT_ID }}
+          project-id: ${{ vars.MAXOPERF_PROJECT_ID }}
+          wait: false

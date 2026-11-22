@@ -1,0 +1,44 @@
+# Scenario: a reusable workflow (workflow_call). Put it in a shared repo and call it from other repos or jobs;
+# see reusable-caller.yml. Secrets are passed explicitly by the caller.
+name: perf-reusable
+on:
+  workflow_call:
+    inputs:
+      account-id:
+        type: string
+        required: true
+      project-id:
+        type: string
+        required: false
+      target-url:
+        type: string
+        required: false
+        default: ''
+      tests:
+        type: string
+        required: false
+        default: .maxoperf/tests/*.{yml,yaml}
+    secrets:
+      api-key:
+        required: true
+    outputs:
+      passed:
+        description: true when every run passed
+        value: ${{ jobs.load-test.outputs.passed }}
+permissions:
+  contents: read
+jobs:
+  load-test:
+    runs-on: ubuntu-latest
+    outputs:
+      passed: ${{ steps.perf.outputs.passed }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: perf
+        uses: MaxoPerf/github-action@v1
+        with:
+          api-key: ${{ secrets.api-key }}
+          account-id: ${{ inputs.account-id }}
+          project-id: ${{ inputs.project-id }}
+          tests: ${{ inputs.tests }}
+          config-overrides: ${{ inputs.target-url != '' && format('TARGET_URL={0}', inputs.target-url) || '' }}

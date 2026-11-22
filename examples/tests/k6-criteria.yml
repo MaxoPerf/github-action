@@ -1,0 +1,12 @@
+# Failure criteria decide the verdict the action gates on (`fail-on: criteria`).
+version: 1
+name: "Example k6 with failure criteria"
+engineKind: k6
+entrypoint: examples/tests/scripts/smoke.js
+loadProfile: { virtualUsers: 25, agentCount: 1, rampUpSeconds: 5, durationSeconds: 30, maxVirtualUsersPerRunner: 25 }
+locationPlan: { rows: [{ kind: managed, cloudProvider: aws, region: us-east-1, runnerCount: 1, weight: 1 }] }
+failureCriteria:
+  - { subject: "p95", condition: ">", threshold: 800, unit: "ms" }        # p95 latency over 800 ms fails the run
+  - { subject: "error-rate", condition: ">", threshold: 1, unit: "%" }    # more than 1 % errors fails the run
+tags: ["example", "gate"]
+config: ["TARGET_URL"]

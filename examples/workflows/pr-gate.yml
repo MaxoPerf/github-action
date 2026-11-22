@@ -1,0 +1,21 @@
+# Scenario: performance gate on every pull request, with one sticky PR comment that is updated on each push.
+# The job fails when a test's failure criteria fail, so you can mark it a required check.
+name: perf-pr-gate
+on:
+  pull_request:
+permissions:
+  contents: read
+  pull-requests: write # needed only for pr-comment
+jobs:
+  load-test:
+    # Secrets are unavailable on fork PRs; without this guard api-key is empty and the step fails.
+    if: github.event.pull_request.head.repo.fork != true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: MaxoPerf/github-action@v1
+        with:
+          api-key: ${{ secrets.MAXOPERF_API_KEY }}
+          account-id: ${{ vars.MAXOPERF_ACCOUNT_ID }}
+          project-id: ${{ vars.MAXOPERF_PROJECT_ID }}
+          pr-comment: true

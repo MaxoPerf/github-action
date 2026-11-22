@@ -1,0 +1,8 @@
+# A JMeter plan as code: engineKind jmeter, the .jmx is the entrypoint.
+version: 1
+name: "Example JMeter API smoke"
+engineKind: jmeter
+entrypoint: examples/tests/scripts/api.jmx
+loadProfile: { virtualUsers: 25, agentCount: 1, rampUpSeconds: 5, durationSeconds: 30, maxVirtualUsersPerRunner: 25 }
+locationPlan: { rows: [{ kind: managed, cloudProvider: aws, region: us-east-1, runnerCount: 1, weight: 1 }] }
+tags: ["example", "jmeter"]

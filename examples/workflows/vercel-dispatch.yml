@@ -1,0 +1,19 @@
+# Scenario: run after a deploy announced by a repository_dispatch event (e.g. a Vercel deploy hook calling
+# POST /repos/<owner>/<repo>/dispatches with {"event_type": "vercel-deployed", "client_payload": {"url": "https://..."}}).
+name: perf-vercel-dispatch
+on:
+  repository_dispatch:
+    types: [vercel-deployed]
+permissions:
+  contents: read
+jobs:
+  load-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: MaxoPerf/github-action@v1
+        with:
+          api-key: ${{ secrets.MAXOPERF_API_KEY }}
+          account-id: ${{ vars.MAXOPERF_ACCOUNT_ID }}
+          project-id: ${{ vars.MAXOPERF_PROJECT_ID }}
+          config-overrides: TARGET_URL=${{ github.event.client_payload.url }}

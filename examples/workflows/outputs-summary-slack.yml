@@ -1,0 +1,46 @@
+# Scenario: use the action's outputs in later steps: a custom job summary and a Slack incoming-webhook message.
+# Outputs: passed (true when every run passed), report-url (first run), results (JSON array for all runs).
+name: perf-outputs
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  load-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - id: perf
+        uses: MaxoPerf/github-action@v1
+        with:
+          api-key: ${{ secrets.MAXOPERF_API_KEY }}
+          account-id: ${{ vars.MAXOPERF_ACCOUNT_ID }}
+          project-id: ${{ vars.MAXOPERF_PROJECT_ID }}
+          fail-on: never # keep going so the steps below can report; gate on `passed` at the end
+      - name: Job summary
+        if: always()
+        env:
+          PASSED: ${{ steps.perf.outputs.passed }}
+          REPORT_URL: ${{ steps.perf.outputs.report-url }}
+          RESULTS: ${{ steps.perf.outputs.results }}
+        run: |
+          {
+            echo "### Performance run: passed=${PASSED}"
+            echo "[Report](${REPORT_URL})"
+            echo
+            echo "| Test | Status | Passed |"
+            echo "| --- | --- | --- |"
+            echo "${RESULTS}" | jq -r '.[] | "| \(.name) | \(.status) | \(.passed) |"'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Notify Slack
+        if: always()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          PASSED: ${{ steps.perf.outputs.passed }}
+          REPORT_URL: ${{ steps.perf.outputs.report-url }}
+        run: |
+          curl -sf -X POST -H 'Content-Type: application/json' \
+            --data "{\"text\": \"MaxoPerf run passed=${PASSED}: ${REPORT_URL}\"}" "$SLACK_WEBHOOK_URL"
+      - name: Gate
+        if: steps.perf.outputs.passed != 'true'
+        run: exit 1

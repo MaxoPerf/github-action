@@ -1,0 +1,11 @@
+# Smallest useful test: a k6 smoke run against $TARGET_URL.
+# Copy to .maxoperf/tests/ with the script, and fix `entrypoint` (repo-root-relative) to wherever you put it.
+version: 1
+name: "Example k6 smoke"           # the sync key: unique per project
+# projectId: "prj-0123456789"      # omit to use the action's project-id input
+engineKind: k6
+entrypoint: examples/tests/scripts/smoke.js
+loadProfile: { virtualUsers: 25, agentCount: 1, rampUpSeconds: 5, durationSeconds: 30, maxVirtualUsersPerRunner: 25 }
+locationPlan: { rows: [{ kind: managed, cloudProvider: aws, region: us-east-1, runnerCount: 1, weight: 1 }] }
+tags: ["example", "smoke"]
+config: ["TARGET_URL"]             # bind the workspace config value; override per run with config-overrides

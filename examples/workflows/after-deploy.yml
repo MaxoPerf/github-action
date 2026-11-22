@@ -1,0 +1,19 @@
+# Scenario: run after a deployment succeeds (GitHub Deployments API), against the deployed environment URL.
+# Works with any CD that creates deployment statuses (GitHub Environments, Vercel's GitHub integration, ...).
+name: perf-after-deploy
+on:
+  deployment_status:
+permissions:
+  contents: read
+jobs:
+  load-test:
+    if: github.event.deployment_status.state == 'success' # ignore pending / failure / inactive
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: MaxoPerf/github-action@v1
+        with:
+          api-key: ${{ secrets.MAXOPERF_API_KEY }}
+          account-id: ${{ vars.MAXOPERF_ACCOUNT_ID }}
+          project-id: ${{ vars.MAXOPERF_PROJECT_ID }}
+          config-overrides: TARGET_URL=${{ github.event.deployment_status.environment_url }}
