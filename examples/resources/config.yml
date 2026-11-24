@@ -1,0 +1,9 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/config.json
+# Copy to .maxoperf/configs/<slug>.yml. A plain (non-secret) workspace value. A var token like the one below is
+# filled per target from `.maxoperf/targets.yml` (see ../targets.yml), so one file serves staging and prod.
+version: 1
+kind: config
+key: target-url
+name: TARGET_URL
+workspace: Payments
+value: ${var.target_url}

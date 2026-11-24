@@ -1,0 +1,7 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/workspace.json
+# Copy to .maxoperf/workspaces/<slug>.yml. A workspace groups projects, tests and shared resources.
+# Prune never deletes a workspace that still holds resources.
+version: 1
+kind: workspace
+key: payments
+name: Payments

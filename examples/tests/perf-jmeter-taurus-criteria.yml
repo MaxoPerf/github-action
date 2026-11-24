@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/test.json
+# Performance test, JMeter driven by a Taurus file. The pass/fail criteria live in the Taurus file
+# (scripts/taurus-api.yml): the object form and the short form of `passfail`. A CSV and the .jmx travel as assets.
+version: 1
+key: perf-jmeter-taurus
+name: "Example perf JMeter via Taurus"
+engineKind: taurus
+entrypoint: examples/tests/scripts/taurus-api.yml
+assets: [examples/tests/scripts/api.jmx, examples/tests/scripts/users.csv]
+loadProfile: { virtualUsers: 25, agentCount: 1, rampUpSeconds: 10, durationSeconds: 60, maxVirtualUsersPerRunner: 25 }
+locationPlan: { rows: [{ kind: managed, cloudProvider: aws, region: us-east-1, runnerCount: 1, weight: 1 }] }
+tags: [example, jmeter, taurus]

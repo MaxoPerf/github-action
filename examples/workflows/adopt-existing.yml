@@ -1,0 +1,25 @@
+# Scenario: first apply against an account that already has resources. By default apply adopts a console resource with
+# the same name; `no-adopt: true` never adopts existing console resources. Preview with a `plan` first:
+# adoptions are listed as `adopt`.
+name: perf-adopt-existing
+on:
+  workflow_dispatch:
+    inputs:
+      adopt:
+        description: Adopt same-named console resources
+        type: boolean
+        default: true
+permissions:
+  contents: read
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: MaxoPerf/github-action@v1
+        with:
+          api-key: ${{ secrets.MAXOPERF_API_KEY }}
+          account-id: ${{ vars.MAXOPERF_ACCOUNT_ID }}
+          command: apply
+          target: prod
+          no-adopt: ${{ inputs.adopt && 'false' || 'true' }}

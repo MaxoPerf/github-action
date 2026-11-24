@@ -1,0 +1,22 @@
+# Scenario: one job per target. The same files are applied to staging and prod; each target brings its own account,
+# workspace and `${var.*}` values from .maxoperf/targets.yml.
+name: perf-matrix-targets
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  apply:
+    strategy:
+      matrix:
+        target: [staging, prod]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: MaxoPerf/github-action@v1
+        with:
+          api-key: ${{ secrets.MAXOPERF_API_KEY }}
+          account-id: ${{ vars.MAXOPERF_ACCOUNT_ID }}
+          command: apply
+          target: ${{ matrix.target }}

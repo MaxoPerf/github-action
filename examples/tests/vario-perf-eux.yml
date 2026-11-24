@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/test.json
+# A Vario master that measures end-user experience under load: a performance member plus the browser probe test.
+version: 1
+kind: test
+type: vario
+key: vario-perf-eux
+name: "Example Vario perf + EUX"
+varioIntent: perf_eux
+members:
+  - maxoperf://test/perf-k6
+  - { test: maxoperf://test/browser-playwright, label: "UX probe", mustPass: true }
+euxProbeTestId: maxoperf://test/browser-playwright
+tags: [example, vario]

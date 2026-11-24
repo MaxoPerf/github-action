@@ -1,0 +1,11 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/test.json
+# Functional API check: one iteration, one runner. loadProfile is still required; this is the functional minimum.
+version: 1
+key: functional-api
+name: "Example functional API check"
+testKind: functional-api
+engineKind: apiritif
+entrypoint: examples/tests/scripts/api_check.py
+loadProfile: { virtualUsers: 1, agentCount: 1, rampUpSeconds: 0, durationSeconds: 10 }
+locationPlan: { rows: [{ kind: managed, cloudProvider: aws, region: us-east-1, runnerCount: 1, weight: 1 }] }
+tags: [example, functional]

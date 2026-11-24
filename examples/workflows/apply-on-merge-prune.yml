@@ -1,0 +1,28 @@
+# Scenario: git is the source of truth. On merge, apply the whole repo and delete what is no longer in git.
+# `prune` needs the full repo (never a `paths:` subset on the step) and a `target:` placement. `safe` prunes the
+# resources this repo owns (created or adopted) whose files are gone and keeps workspaces and projects; `all`
+# also prunes workspaces and projects.
+name: perf-apply-on-merge-prune
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.maxoperf/**'
+      - 'perf/**'
+      - 'data/**'
+permissions:
+  contents: read
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: MaxoPerf/github-action@v1
+        with:
+          api-key: ${{ secrets.MAXOPERF_API_KEY }}
+          account-id: ${{ vars.MAXOPERF_ACCOUNT_ID }}
+          command: apply
+          target: prod
+          prune: safe
+        env:
+          CHECKOUT_API_TOKEN: ${{ secrets.CHECKOUT_API_TOKEN }}

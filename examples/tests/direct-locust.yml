@@ -1,0 +1,10 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/test.json
+# Direct engine run: a Locust file, no Taurus wrapper.
+version: 1
+key: direct-locust
+name: "Example Locust"
+engineKind: locust
+entrypoint: examples/tests/scripts/locustfile.py
+loadProfile: { virtualUsers: 25, agentCount: 1, rampUpSeconds: 10, durationSeconds: 60, maxVirtualUsersPerRunner: 25 }
+locationPlan: { rows: [{ kind: managed, cloudProvider: aws, region: us-east-1, runnerCount: 1, weight: 1 }] }
+tags: [example, locust]

@@ -1,0 +1,10 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/dataset.json
+# Copy to .maxoperf/datasets/<slug>.yml. `file` is repo-root-relative (adjust it when you copy); the columns are
+# derived from the CSV header when you omit `columns`.
+version: 1
+kind: dataset
+key: users
+name: users
+workspace: Payments
+sourceType: csv
+file: examples/tests/scripts/users.csv

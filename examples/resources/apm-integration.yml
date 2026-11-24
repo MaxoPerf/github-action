@@ -1,0 +1,10 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/apm-integration.json
+# Copy to .maxoperf/apm-integrations/<slug>.yml. One integration per provider per workspace; the API key is a secret.
+version: 1
+kind: apm-integration
+key: datadog
+workspace: Payments
+provider: datadog
+site: datadoghq.eu
+apiKeySecretId: maxoperf://secret/checkout-api-token
+sendMarkers: true

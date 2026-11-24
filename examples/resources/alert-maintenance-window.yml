@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/alert-maintenance-window.json
+# Copy to .maxoperf/alert-maintenance-windows/<slug>.yml. Silences alert rules in the window: `all`, or the rules
+# scoped to one of `tagFilter`.
+version: 1
+kind: alert-maintenance-window
+key: weekly-deploy
+name: Weekly deploy
+workspace: Payments
+scopeKind: tags
+tagFilter: [checkout]
+startsAt: "2026-12-01T22:00:00Z"
+endsAt: "2026-12-01T23:00:00Z"

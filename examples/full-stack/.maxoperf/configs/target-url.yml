@@ -1,0 +1,7 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/config.json
+version: 1
+kind: config
+key: target-url
+name: TARGET_URL
+workspace: Payments
+value: ${var.target_url}

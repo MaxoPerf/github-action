@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/data-entity.json
+# Copy to .maxoperf/data-entities/<slug>.yml. An entity has a parameter schema and named variants: an uploaded CSV
+# (`file`, repo-root-relative) or a synthetic generator. The variant list is the full set.
+version: 1
+kind: data-entity
+key: customers
+name: Customers
+workspace: Payments
+description: Customer accounts used by the checkout flow
+schema:
+  version: 2
+  parameters:
+    - { name: email, type: string }
+    - { name: password, type: string }
+variants:
+  - { name: from-csv, sourceKind: csv, file: examples/tests/scripts/users.csv }
+  - { name: generated, sourceKind: synthetic, syntheticSpec: { rows: 1000 } }

@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/test.json
+# A Vario master: runs several tests together as one load mix. Members are test URIs (a bare URI is shorthand for
+# `{ test: <uri> }`). Members in the same repo are applied first.
+version: 1
+kind: test
+type: vario
+key: vario-perf-mix
+name: "Example Vario perf mix"
+varioIntent: perf_mix
+members:
+  - maxoperf://test/perf-k6
+  - { test: maxoperf://test/direct-locust, label: "Locust @ EU", mustPass: false }
+tags: [example, vario]

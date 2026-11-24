@@ -1,0 +1,11 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/notification-rule.json
+# Copy to .maxoperf/notification-rules/<slug>.yml. Workspace-wide: send an integration a message when a trigger fires
+# for tests carrying one of `tagFilter` (omit it for every test). The rule is identified by integration + trigger.
+version: 1
+kind: notification-rule
+key: slack-run-failed
+workspace: Payments
+integrationId: maxoperf://notification-integration/slack-perf
+trigger: run_failed
+tagFilter: [checkout]
+enabled: true

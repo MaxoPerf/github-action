@@ -1,0 +1,22 @@
+# Scenario: bootstrap a repo from an existing account. `command: export` prints a resource as a resource file you can
+# commit under .maxoperf/. To pull the whole account, run `maxoperf pull --out .maxoperf` locally.
+name: perf-bootstrap-pull
+on:
+  workflow_dispatch:
+    inputs:
+      test:
+        description: Name or id of the test to export
+        required: true
+permissions:
+  contents: read
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: MaxoPerf/github-action@v1
+        with:
+          api-key: ${{ secrets.MAXOPERF_API_KEY }}
+          account-id: ${{ vars.MAXOPERF_ACCOUNT_ID }}
+          command: export
+          kind: test
+          resource: ${{ inputs.test }}

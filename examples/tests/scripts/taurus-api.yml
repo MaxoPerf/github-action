@@ -1,0 +1,17 @@
+# Taurus file for perf-jmeter-taurus-criteria.yml. Both passfail spellings are shown.
+execution:
+  - executor: jmeter
+    scenario: api
+scenarios:
+  api:
+    script: examples/tests/scripts/api.jmx
+reporting:
+  - module: passfail
+    criteria:
+      - avg-rt>1s for 10s, stop as failed            # short form
+      - subject: p95                                  # object form
+        condition: ">"
+        threshold: 800ms
+        timeframe: 10s
+        stop: true
+        fail: true

@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/virtual-service-pack.json
+# Copy to .maxoperf/virtual-service-packs/<slug>.yml. Installs a library pack as a running virtual service.
+# `placement` is REQUIRED.
+version: 1
+kind: virtual-service-pack
+key: stripe-mock
+name: Stripe mock
+workspace: Payments
+pack: stripe
+placement:
+  privateDatacenterId: maxoperf://private-datacenter/eu-k8s
+idleShutdownMinutes: 60

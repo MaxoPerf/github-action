@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/dashboard.json
+# Copy to .maxoperf/dashboards/<slug>.yml. Workspace dashboards only (user-private dashboards are not synced).
+# `layout` is what the console stores: `maxoperf export dashboard <name>` writes it for you.
+version: 1
+kind: dashboard
+key: checkout-overview
+name: Checkout overview
+workspace: Payments
+scope: workspace
+description: Latency and errors of the checkout tests
+layout:
+  version: 1
+  charts: []

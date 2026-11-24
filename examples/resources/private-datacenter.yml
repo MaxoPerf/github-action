@@ -1,0 +1,11 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/private-datacenter.json
+# Copy to .maxoperf/private-datacenters/<slug>.yml. A self-hosted runner site. `outpostDeploymentMode` is fixed at
+# creation; the install token is shown once in the console and never in git.
+version: 1
+kind: private-datacenter
+key: eu-k8s
+name: eu-k8s
+workspace: Payments
+outpostDeploymentMode: kubernetes
+maxTotalContainers: 50
+labels: { region: eu }

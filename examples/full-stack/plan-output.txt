@@ -1,0 +1,15 @@
+Target staging (github:acme/shop)
+tier 1  = maxoperf://secret/checkout-api-token       unchanged
+        = maxoperf://config/target-url               unchanged
+        + maxoperf://dataset/users                   create
+tier 2  ~ maxoperf://virtual-service/payments        update: placement.privateDatacenterId  (will deploy)
+tier 3  + maxoperf://test/search-api                 create
+tier 4  ~ maxoperf://test/checkout-soak              update: loadProfile.virtualUsers 50 -> 60
+                binds maxoperf://virtual-service/payments, maxoperf://dataset/users,
+                      maxoperf://dataset/name:Legacy%20users, maxoperf://secret/checkout-api-token,
+                      maxoperf://config/target-url, maxoperf://private-datacenter/name:eu-k8s,
+                      maxoperf://test/search-api
+tier 5  + maxoperf://test/mixed-load                 create (vario)  binds maxoperf://test/checkout-soak, maxoperf://test/search-api
+tier 6  + maxoperf://alert-rule/checkout-p95         create  binds maxoperf://notification-integration/name:Slack%20%23perf
+        adopt maxoperf://test/legacy-smoke           adopt (will be pruned by this repo if removed from git)
+Plan: 4 create, 2 update, 1 adopt, 2 unchanged

@@ -1,0 +1,10 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/deploy-hook.json
+# Copy to .maxoperf/deploy-hooks/<slug>.yml. A CD system calls the hook URL after a deploy and MaxoPerf runs every
+# test carrying `tag`. The hook token is server-generated and never in git.
+version: 1
+kind: deploy-hook
+key: after-deploy
+name: After deploy
+workspace: Payments
+tag: smoke
+signingSecretId: maxoperf://secret/checkout-api-token

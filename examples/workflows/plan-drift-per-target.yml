@@ -1,0 +1,25 @@
+# Scenario: nightly drift check of every target. One job per target; a job fails (exit 4) when its target differs
+# from git.
+name: perf-plan-drift-per-target
+on:
+  schedule:
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  drift:
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [staging, prod]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: MaxoPerf/github-action@v1
+        with:
+          api-key: ${{ secrets.MAXOPERF_API_KEY }}
+          account-id: ${{ vars.MAXOPERF_ACCOUNT_ID }}
+          command: plan
+          target: ${{ matrix.target }}
+          exit-code: "true"

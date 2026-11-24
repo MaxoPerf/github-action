@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/test.json
+# Browser test: a Selenium (Python) script on Firefox and Chrome, one runner each.
+version: 1
+key: browser-selenium
+name: "Example Selenium browser test"
+testKind: browser
+engineKind: selenium
+entrypoint: examples/tests/scripts/selenium_test.py
+browser: firefox
+browsers: [firefox, chrome]
+loadProfile: { virtualUsers: 1, agentCount: 1, rampUpSeconds: 0, durationSeconds: 60 }
+locationPlan: { rows: [{ kind: managed, cloudProvider: aws, region: us-east-1, runnerCount: 1, weight: 1 }] }
+tags: [example, browser]

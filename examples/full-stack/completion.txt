@@ -1,0 +1,6 @@
+Editor completion after `maxoperf schema sync --target staging`, inside `virtualServices:`
+
+virtualServices: [
+  maxoperf://virtual-service/payments                 (repo key)
+  maxoperf://virtual-service/name:Orders%20mock       (existing in the target)
+  maxoperf://virtual-service/name:Gateway%20mock?workspace=Shared

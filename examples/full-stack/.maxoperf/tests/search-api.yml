@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/test.json
+version: 1
+kind: test
+key: search-api
+name: Search API
+project: Checkout
+engineKind: k6
+entrypoint: perf/search-api/script.js
+loadProfile: { virtualUsers: 25, agentCount: 1, rampUpSeconds: 10, durationSeconds: 120 }
+locationPlan:
+  rows: [{ kind: byoc, privateDatacenterId: "maxoperf://private-datacenter/name:eu-k8s", runnerCount: 1, weight: 1 }]
+config: [maxoperf://config/target-url]
+tags: [smoke, search]

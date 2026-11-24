@@ -1,0 +1,26 @@
+# Scenario: the full-stack example repo (../full-stack). Apply to every target with `target:` per environment. An ad-hoc
+# `workspace-id`/`project-id` matrix without `target` shares the ledger target `default` and re-keys when the same key
+# lands in different scopes; `--prune` is refused there, so use `target:`.
+name: perf-full-stack-promote
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  deploy:
+    strategy:
+      matrix:
+        target: [staging, prod]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: MaxoPerf/github-action@v1
+        with:
+          command: apply
+          target: ${{ matrix.target }}
+          prune: safe
+          api-key: ${{ secrets.MAXOPERF_API_KEY }}
+          account-id: ${{ vars.MAXOPERF_ACCOUNT_ID }}
+        env:
+          CHECKOUT_API_TOKEN: ${{ secrets[format('CHECKOUT_API_TOKEN_{0}', matrix.target)] }}

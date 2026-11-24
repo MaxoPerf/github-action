@@ -1,0 +1,31 @@
+# Scenario: staging first, prod after. Two jobs apply the same files to two targets; prod waits for staging and for
+# the `production` environment's approval.
+name: perf-multi-environment-apply
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  staging:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: MaxoPerf/github-action@v1
+        with:
+          api-key: ${{ secrets.MAXOPERF_API_KEY }}
+          account-id: ${{ vars.MAXOPERF_ACCOUNT_ID }}
+          command: apply
+          target: staging
+  prod:
+    needs: staging
+    environment: production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: MaxoPerf/github-action@v1
+        with:
+          api-key: ${{ secrets.MAXOPERF_API_KEY }}
+          account-id: ${{ vars.MAXOPERF_ACCOUNT_ID }}
+          command: apply
+          target: prod

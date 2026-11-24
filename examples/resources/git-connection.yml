@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/git-connection.json
+# Copy to .maxoperf/git-connections/<slug>.yml. Lets MaxoPerf pull test files from a repository (the access token is
+# never in git).
+version: 1
+kind: git-connection
+key: shop-main
+workspace: Payments
+provider: github
+repository: acme/shop
+branch: main
+testPath: .maxoperf/tests
+runOn: manual

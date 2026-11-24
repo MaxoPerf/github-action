@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/virtual-service.json
+# Copy to .maxoperf/virtual-services/<slug>.yml. `placement.privateDatacenterId` is REQUIRED. `deploy: true` makes
+# apply deploy it (before the tests bound to it); without it apply never starts the service. The home group is
+# created for you; transactions live in this file.
+version: 1
+kind: virtual-service
+key: payments
+name: Payments
+workspace: Payments
+deploy: true
+placement:
+  privateDatacenterId: maxoperf://private-datacenter/eu-k8s
+webhookTarget:
+  url: https://hooks.example.com/payments
+  signingSecretId: maxoperf://secret/checkout-api-token
+transactions:
+  - name: authorize
+    request: { method: POST, url: { kind: equals, value: /v1/authorize } }
+    response: { mode: mock, status: 200, bodyTemplate: '{"approved":true}' }

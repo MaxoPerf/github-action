@@ -1,0 +1,17 @@
+# Scenario: run by tag. Start tests that already exist in MaxoPerf (no files in the repo): every test carrying the
+# `smoke` tag, plus one test by id. Same waiting, gating, summary and PR comment as a file-based run.
+name: perf-run-by-tag
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: MaxoPerf/github-action@v1
+        with:
+          api-key: ${{ secrets.MAXOPERF_API_KEY }}
+          account-id: ${{ vars.MAXOPERF_ACCOUNT_ID }}
+          tags: smoke
+          test-ids: ${{ vars.MAXOPERF_CHECKOUT_TEST_ID }}

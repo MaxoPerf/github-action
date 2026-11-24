@@ -15,13 +15,65 @@ inputs:
     description: "Default MaxoPerf project for test files without projectId"
     required: false
   command:
-    description: "run | push"
+    description: "run | push | apply | plan | export | validate (push = apply)"
     required: false
     default: "run"
-  tests:
-    description: "Test file glob(s), newline-separated; a single path syncs/runs one test"
+  paths:
+    description: "Resource file path(s) or glob(s), newline-separated. Empty = every resource under .maxoperf/ (a v1 repo's .maxoperf/tests/*.yml included)"
     required: false
-    default: ".maxoperf/tests/*.{yml,yaml}"
+  tests:
+    description: "Alias of paths (kept from v1)"
+    required: false
+  test-ids:
+    description: "run: existing test ids or maxoperf://test/... URIs to run, newline or comma separated"
+    required: false
+  tags:
+    description: "run: run every existing test carrying ANY of these tags, newline or comma separated"
+    required: false
+  no-apply:
+    description: "run: skip applying the selected repo tests' dependencies first (needs an earlier apply)"
+    required: false
+    default: "false"
+  target:
+    description: "Named destination from .maxoperf/targets.yml (--target)"
+    required: false
+  source:
+    description: "Ledger source id (--source); default = the repository"
+    required: false
+  workspace-id:
+    description: "Workspace name or id to place resources in (--workspace)"
+    required: false
+  vars:
+    description: "Variables for ${VAR} substitution in resource files, one KEY=VALUE per line (--var)"
+    required: false
+  no-adopt:
+    description: "Never adopt existing console resources (--no-adopt)"
+    required: false
+    default: "false"
+  allow-restart:
+    description: "Allow changes that restart a running resource (--allow-restart)"
+    required: false
+    default: "false"
+  lock-timeout:
+    description: "How long to wait for the apply lock, e.g. 10m (--lock-timeout)"
+    required: false
+  prune:
+    description: "plan/apply: none | safe | all - delete ledger-owned resources no longer in git (full repo only)"
+    required: false
+  dry-run:
+    description: "apply: print the plan, write nothing"
+    required: false
+    default: "false"
+  exit-code:
+    description: "plan: fail the step (exit 4) when the plan has pending changes"
+    required: false
+    default: "false"
+  kind:
+    description: "export: resource kind (or a maxoperf:// URI)"
+    required: false
+  resource:
+    description: "export: resource name or id"
+    required: false
   config-overrides:
     description: "Per-run config values, one KEY=VALUE per line (e.g. TARGET_URL=…)"
     required: false
@@ -52,6 +104,10 @@ inputs:
 outputs:
   results:
     description: "JSON array: name, testId, runId, status, passed, reportUrl"
+  plan:
+    description: "command plan: the CLI's plan JSON (cli-output-plan, carries schemaVersion)"
+  schema-version:
+    description: "schemaVersion of the CLI's JSON output behind results/plan"
   test-id:
     description: "First test id"
   run-id:

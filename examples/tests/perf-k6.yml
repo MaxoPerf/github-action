@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/test.json
+# Performance test, k6: a referenced script plus a CSV asset, criteria and a ramp. Copy to .maxoperf/tests/perf-k6.yml.
+version: 1
+key: perf-k6
+name: "Example perf k6"
+engineKind: k6
+entrypoint: examples/tests/scripts/csv-users.js
+assets: [examples/tests/scripts/users.csv]
+loadProfile: { virtualUsers: 50, agentCount: 1, rampUpSeconds: 30, durationSeconds: 120, maxVirtualUsersPerRunner: 50 }
+locationPlan: { rows: [{ kind: managed, cloudProvider: aws, region: eu-west-1, runnerCount: 1, weight: 1 }] }
+failureCriteria:
+  - { subject: p95, condition: ">", threshold: 800, unit: ms }
+config: [TARGET_URL]
+tags: [example, perf]

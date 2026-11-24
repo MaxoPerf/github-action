@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/test.json
+# Builder test (no script file): the browser steps model the console builder edits, kept in git.
+version: 1
+key: builder-browser
+name: "Example browser builder test"
+testKind: browser
+engineKind: taurus
+authoringMode: interactive
+interactiveKind: browser
+browserSteps:
+  version: 3
+  browser: Chrome
+  scenarios:
+    - id: s1
+      label: main
+      transactions:
+        - id: t1
+          label: home
+          steps:
+            - { id: p1, action: navigate, url: "https://example.com/" }
+            - { id: p2, action: assertPageContains, text: Example, match: contains }
+loadProfile: { virtualUsers: 1, agentCount: 1, rampUpSeconds: 0, durationSeconds: 60 }
+locationPlan: { rows: [{ kind: managed, cloudProvider: aws, region: us-east-1, runnerCount: 1, weight: 1 }] }
+tags: [example, builder]

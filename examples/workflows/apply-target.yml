@@ -1,0 +1,27 @@
+# Scenario: apply to one chosen target on demand. `vars` overrides a target variable for this run only.
+name: perf-apply-target
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Target name from .maxoperf/targets.yml
+        required: true
+        default: staging
+      target_url:
+        description: Override the target_url variable
+        required: false
+permissions:
+  contents: read
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: MaxoPerf/github-action@v1
+        with:
+          api-key: ${{ secrets.MAXOPERF_API_KEY }}
+          account-id: ${{ vars.MAXOPERF_ACCOUNT_ID }}
+          command: apply
+          target: ${{ inputs.target }}
+          vars: |
+            target_url=${{ inputs.target_url }}

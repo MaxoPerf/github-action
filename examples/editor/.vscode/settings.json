@@ -1,0 +1,26 @@
+{
+  "yaml.schemas": {
+    "https://maxoperf.com/schemas/resources/v1/workspace.json": ["**/.maxoperf/workspaces/*.{yml,yaml}"],
+    "https://maxoperf.com/schemas/resources/v1/project.json": ["**/.maxoperf/projects/*.{yml,yaml}"],
+    "https://maxoperf.com/schemas/resources/v1/config.json": ["**/.maxoperf/configs/*.{yml,yaml}"],
+    "https://maxoperf.com/schemas/resources/v1/secret.json": ["**/.maxoperf/secrets/*.{yml,yaml}"],
+    "https://maxoperf.com/schemas/resources/v1/dataset.json": ["**/.maxoperf/datasets/*.{yml,yaml}"],
+    "https://maxoperf.com/schemas/resources/v1/data-entity.json": ["**/.maxoperf/data-entities/*.{yml,yaml}"],
+    "https://maxoperf.com/schemas/resources/v1/transform-snippet.json": ["**/.maxoperf/transform-snippets/*.{yml,yaml}"],
+    "https://maxoperf.com/schemas/resources/v1/test.json": ["**/.maxoperf/tests/*.{yml,yaml}"],
+    "https://maxoperf.com/schemas/resources/v1/virtual-service.json": ["**/.maxoperf/virtual-services/*.{yml,yaml}"],
+    "https://maxoperf.com/schemas/resources/v1/virtual-service-pack.json": ["**/.maxoperf/virtual-service-packs/*.{yml,yaml}"],
+    "https://maxoperf.com/schemas/resources/v1/dashboard.json": ["**/.maxoperf/dashboards/*.{yml,yaml}"],
+    "https://maxoperf.com/schemas/resources/v1/alert-rule.json": ["**/.maxoperf/alert-rules/*.{yml,yaml}"],
+    "https://maxoperf.com/schemas/resources/v1/alert-maintenance-window.json": ["**/.maxoperf/alert-maintenance-windows/*.{yml,yaml}"],
+    "https://maxoperf.com/schemas/resources/v1/notification-integration.json": ["**/.maxoperf/notification-integrations/*.{yml,yaml}"],
+    "https://maxoperf.com/schemas/resources/v1/notification-rule.json": ["**/.maxoperf/notification-rules/*.{yml,yaml}"],
+    "https://maxoperf.com/schemas/resources/v1/deploy-hook.json": ["**/.maxoperf/deploy-hooks/*.{yml,yaml}"],
+    "https://maxoperf.com/schemas/resources/v1/apm-integration.json": ["**/.maxoperf/apm-integrations/*.{yml,yaml}"],
+    "https://maxoperf.com/schemas/resources/v1/git-connection.json": ["**/.maxoperf/git-connections/*.{yml,yaml}"],
+    "https://maxoperf.com/schemas/resources/v1/private-datacenter.json": ["**/.maxoperf/private-datacenters/*.{yml,yaml}"],
+    "https://maxoperf.com/schemas/resources/v1/browser-fleet.json": ["**/.maxoperf/browser-fleets/*.{yml,yaml}"],
+    "https://maxoperf.com/schemas/resources/v1/account-settings.json": ["**/.maxoperf/account-settings/*.{yml,yaml}"],
+    "https://maxoperf.com/schemas/resources/v1/targets.json": ["**/.maxoperf/targets.{yml,yaml}"]
+  }
+}

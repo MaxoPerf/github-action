@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/test.json
+version: 1
+kind: test
+key: checkout-soak
+name: Checkout soak
+project: Checkout
+engineKind: k6
+entrypoint: perf/checkout-soak/script.js
+assets: [perf/checkout-soak/data/users.csv]
+loadProfile: { virtualUsers: 50, agentCount: 1, rampUpSeconds: 30, durationSeconds: 600 }
+locationPlan:
+  rows: [{ kind: byoc, privateDatacenterId: "maxoperf://private-datacenter/name:eu-k8s", runnerCount: 1, weight: 1 }]
+failureCriteria:
+  - { subject: p95, condition: ">", threshold: 800, unit: ms }
+config: [maxoperf://config/target-url]            # the legacy form `config: [TARGET_URL]` still works
+secrets: [maxoperf://secret/checkout-api-token]
+dataBindings:
+  - maxoperf://dataset/users                                   # string form: all attributes default
+  - { dataset: "maxoperf://dataset/name:Legacy%20users", distribution: replicate, recycle: true }   # object form
+virtualServices:
+  - maxoperf://virtual-service/payments                        # env var defaults to MAXOPERF_VS_PAYMENTS_URL
+  - { virtualService: "maxoperf://virtual-service/name:Gateway%20mock?workspace=Shared", envVarName: GATEWAY, autoStart: false }   # another workspace, same account (name form only)
+euxProbeTestId: maxoperf://test/search-api
+tags: [smoke, checkout]

@@ -1,0 +1,11 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/test.json
+version: 1
+kind: test
+type: vario
+key: mixed-load
+name: Mixed load
+project: Checkout
+varioIntent: perf_mix
+members:
+  - maxoperf://test/checkout-soak               # a bare URI entry is shorthand for { test: <uri> }
+  - { test: maxoperf://test/search-api, label: "Search @ EU", mustPass: false }

@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/test.json
+# Everything that hangs off a test, in one file: schedules, notification rules, dependencies, data bindings, a virtual
+# service and an EUX probe. References are URIs (the `id:` form is target-specific: prefer keys in multi-target repos).
+version: 1
+kind: test
+key: test-with-attachments
+name: "Example test with attachments"
+engineKind: k6
+entrypoint: examples/tests/scripts/smoke.js
+loadProfile: { virtualUsers: 25, agentCount: 1, rampUpSeconds: 5, durationSeconds: 30, maxVirtualUsersPerRunner: 25 }
+locationPlan:
+  rows:
+    - { kind: byoc, privateDatacenterId: "maxoperf://private-datacenter/id:pdc-0123456789", runnerCount: 1, weight: 1 }
+schedules:                                  # the full set: a schedule not listed is removed on apply
+  - { name: nightly, cronExpr: "0 2 * * *", timezone: UTC, enabled: true }
+notificationRules:
+  - { integrationId: "maxoperf://notification-integration/slack-perf", trigger: run_failed }
+dependencies:
+  tunnels: ["maxoperf://tunnel/name:staging-vpn"]
+  browserFleets: [{ browserFleet: "maxoperf://browser-fleet/ui-fleet", envVarName: FLEET }]
+dataBindings:
+  - maxoperf://dataset/users
+  - { dataset: "maxoperf://dataset/name:Legacy%20users", distribution: replicate, recycle: true }
+virtualServices:
+  - maxoperf://virtual-service/payments
+  - { virtualService: "maxoperf://virtual-service/name:Gateway%20mock?workspace=Shared", envVarName: GATEWAY, autoStart: false }
+euxProbeTestId: maxoperf://test/browser-playwright
+tags: [example, attachments]

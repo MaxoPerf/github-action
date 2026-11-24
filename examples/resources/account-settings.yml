@@ -1,0 +1,9 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/account-settings.json
+# Copy to .maxoperf/account-settings/<slug>.yml. Account-wide defaults; only the keys you write are managed.
+# One per account, never pruned.
+version: 1
+kind: account-settings
+recordingPreferences:
+  recordingLayoutDefault: tiled
+aiPreferences:
+  rootCauseAiEnabled: false

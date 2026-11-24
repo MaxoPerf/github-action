@@ -1,0 +1,18 @@
+# Scenario: trigger one existing test by id or by URI. `test-ids` takes ids or maxoperf://test/... URIs, one per line.
+name: perf-trigger-by-test-id
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: MaxoPerf/github-action@v1
+        with:
+          api-key: ${{ secrets.MAXOPERF_API_KEY }}
+          account-id: ${{ vars.MAXOPERF_ACCOUNT_ID }}
+          command: run
+          test-ids: |
+            maxoperf://test/name:Checkout%20soak
+            ${{ vars.MAXOPERF_CHECKOUT_TEST_ID }}

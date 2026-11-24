@@ -1,0 +1,20 @@
+# Scenario: nightly run of every test tagged `nightly`, with a generous timeout. Tests added or retagged in
+# MaxoPerf are picked up without touching this file.
+name: perf-nightly-by-tag
+on:
+  schedule:
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  nightly:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: MaxoPerf/github-action@v1
+        with:
+          api-key: ${{ secrets.MAXOPERF_API_KEY }}
+          account-id: ${{ vars.MAXOPERF_ACCOUNT_ID }}
+          command: run
+          tags: nightly
+          timeout-minutes: "120"

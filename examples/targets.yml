@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/targets.json
+# Copy to .maxoperf/targets.yml. One set of files, several destinations: `maxoperf apply --target staging`.
+# `${var.target_url}` in any resource file is filled from the selected target's vars (resources/config.yml).
+version: 1
+defaults: { workspace: Payments, project: Checkout }
+targets:
+  staging:
+    account: acn-0123456789
+    workspace: Payments-Staging
+    vars: { target_url: https://staging.shop.example.com }
+  prod:
+    account: acn-9876543210
+    workspace: Payments
+    vars: { target_url: https://shop.example.com }
+    adopt: { "maxoperf://test/checkout-smoke": tst-0123456789 }   # take over an existing console test instead of creating one

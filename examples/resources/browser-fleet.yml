@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/browser-fleet.json
+# Copy to .maxoperf/browser-fleets/<slug>.yml. A managed browser pool. Apply always creates it stopped (start it
+# from a test run or the console); fleets declared in git are recreated on apply after their TTL.
+version: 1
+kind: browser-fleet
+key: ui-fleet
+name: UI fleet
+workspace: Payments
+browsers:
+  - { browser: chrome, count: 2, location: maxoperf://private-datacenter/eu-k8s }
+ttlMinutes: 120
+idleTimeoutMinutes: 30

@@ -78,8 +78,15 @@ Complete workflows (PR gate, after deploy, nightly, matrix, reusable, and more) 
 | `api-key` | yes | | MaxoPerf API key (`mpak_...`); pass it via secrets |
 | `account-id` | yes | | MaxoPerf account id |
 | `project-id` | no | | Default project for test files without `projectId` |
-| `command` | no | `run` | `run` (sync, then run) or `push` (sync only) |
-| `tests` | no | `.maxoperf/tests/*.{yml,yaml}` | Newline-separated globs; one path runs one test |
+| `command` | no | `run` | `run` (apply what the selected tests need, then run), `push`/`apply` (sync only), `plan`, `export`, `validate` |
+| `paths` | no | every resource under `.maxoperf/` | Newline-separated files or globs; one path runs one test. `tests` is the same input (kept from v1) |
+| `test-ids` | no | | `run`: existing test ids or `maxoperf://test/...` URIs, newline or comma separated |
+| `tags` | no | | `run`: every existing test carrying ANY of these tags |
+| `no-apply` | no | `false` | `run`: skip applying the selected tests' dependencies (needs an earlier apply) |
+| `target`, `source`, `workspace-id`, `vars`, `no-adopt`, `allow-restart`, `lock-timeout` | no | | The CLI flags of the same name (`vars` = one `KEY=VALUE` per line) |
+| `prune`, `dry-run` | no | | `plan`/`apply` only; `prune` (`none`, `safe`, `all`) needs the full repo |
+| `exit-code` | no | `false` | `plan`: fail the step (exit 4) when the plan has pending changes |
+| `kind`, `resource` | no | | `export`: the resource kind (or URI) and name/id |
 | `config-overrides` | no | | Per-run config values, one `KEY=VALUE` per line |
 | `wait` | no | `true` | Wait for runs to finish |
 | `fail-on` | no | `criteria` | `criteria` fails the job on a failed run; `never` never does |
@@ -93,6 +100,8 @@ Complete workflows (PR gate, after deploy, nightly, matrix, reusable, and more) 
 | Output | Description |
 | --- | --- |
 | `results` | JSON array: name, testId, runId, status, passed, reportUrl |
+| `plan` | `command: plan`: the CLI's plan JSON (`schemaVersion`, `changes`, `pending`) |
+| `schema-version` | `schemaVersion` of the CLI JSON behind `results`/`plan` |
 | `test-id`, `run-id`, `status`, `report-url` | Values of the first test |
 | `passed` | `true` when every run passed |
 

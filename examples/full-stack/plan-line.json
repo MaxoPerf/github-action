@@ -1,0 +1,1 @@
+{"schemaVersion":"1.0","kind":"test","key":"checkout-soak","uri":"maxoperf://test/checkout-soak","action":"update","tier":4,"binds":["maxoperf://virtual-service/payments","maxoperf://secret/checkout-api-token"]}

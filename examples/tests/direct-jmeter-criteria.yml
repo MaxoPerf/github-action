@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/test.json
+# Direct JMeter run (the .jmx is the entrypoint) with failure criteria evaluated by MaxoPerf.
+version: 1
+key: direct-jmeter-criteria
+name: "Example JMeter with criteria"
+engineKind: jmeter
+entrypoint: examples/tests/scripts/api.jmx
+loadProfile: { virtualUsers: 25, agentCount: 1, rampUpSeconds: 5, durationSeconds: 30, maxVirtualUsersPerRunner: 25 }
+locationPlan: { rows: [{ kind: managed, cloudProvider: aws, region: us-east-1, runnerCount: 1, weight: 1 }] }
+failureCriteria:
+  - { subject: avg-rt, condition: ">", threshold: 1000, unit: ms }
+  - { subject: error-rate, condition: ">", threshold: 1, unit: "%" }
+tags: [example, jmeter, gate]

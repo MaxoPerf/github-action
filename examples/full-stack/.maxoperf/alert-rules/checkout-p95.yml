@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/alert-rule.json
+version: 1
+kind: alert-rule
+key: checkout-p95
+name: Checkout p95
+workspace: Payments
+metric: p95_latency_ms
+operator: above
+threshold: 800
+durationMinutes: 5
+severity: critical
+scopeKind: tags
+tagFilter: [checkout]
+destinationIds: ["maxoperf://notification-integration/name:Slack%20%23perf"]

@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/notification-integration.json
+# Copy to .maxoperf/notification-integrations/<slug>.yml. A webhook (or email) destination. A header or query item is
+# `{ name, value }` for a literal, or `{ name, secret | config: <uri> }` so a token never lands in git.
+version: 1
+kind: notification-integration
+key: slack-perf
+name: "Slack #perf"
+workspace: Payments
+integrationKind: webhook
+config:
+  url: https://hooks.example.com/perf
+  method: POST
+  headers:
+    - { name: Authorization, secret: maxoperf://secret/checkout-api-token }
+  queryParams:
+    - { name: env, config: maxoperf://config/target-url }
+  signingSecretId: maxoperf://secret/checkout-api-token
+enabled: true

@@ -1,0 +1,23 @@
+# Scenario: show what a pull request would change. `plan` writes nothing; the sticky comment lists the creates,
+# updates and deletes. Needs the whole repo checked out (no `paths` filter on the step).
+name: perf-plan-on-pr
+on:
+  pull_request:
+    paths:
+      - '.maxoperf/**'
+      - 'perf/**'
+permissions:
+  contents: read
+  pull-requests: write
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: MaxoPerf/github-action@v1
+        with:
+          api-key: ${{ secrets.MAXOPERF_API_KEY }}
+          account-id: ${{ vars.MAXOPERF_ACCOUNT_ID }}
+          command: plan
+          target: staging
+          pr-comment: "true"

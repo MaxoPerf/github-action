@@ -1,0 +1,21 @@
+# Scenario: detect console edits that drifted from git. `plan` with `exit-code: true` fails the job (exit 4) when the
+# plan has any pending change; run it on a schedule.
+name: perf-drift-check
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: MaxoPerf/github-action@v1
+        with:
+          api-key: ${{ secrets.MAXOPERF_API_KEY }}
+          account-id: ${{ vars.MAXOPERF_ACCOUNT_ID }}
+          command: plan
+          target: prod
+          exit-code: "true"

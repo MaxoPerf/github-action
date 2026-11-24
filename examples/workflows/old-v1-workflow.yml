@@ -1,0 +1,21 @@
+# Scenario: a workflow written for v1.0.0, unchanged. It still works: `tests` (the alias of `paths`), `config-overrides`
+# and `fail-on` keep their meaning, and `.maxoperf/tests/*.yml` files without `kind` are tests.
+name: perf-old-v1
+on:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  perf:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: MaxoPerf/github-action@v1
+        with:
+          api-key: ${{ secrets.MAXOPERF_API_KEY }}
+          account-id: ${{ vars.MAXOPERF_ACCOUNT_ID }}
+          project-id: ${{ vars.MAXOPERF_PROJECT_ID }}
+          tests: .maxoperf/tests/*.yml
+          config-overrides: |
+            TARGET_URL=https://staging.example.com
+          fail-on: criteria

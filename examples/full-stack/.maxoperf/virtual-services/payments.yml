@@ -1,0 +1,9 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/virtual-service.json
+version: 1
+kind: virtual-service
+key: payments
+name: Payments
+workspace: Payments
+deploy: true
+placement:
+  privateDatacenterId: maxoperf://private-datacenter/name:eu-k8s   # nested as in CreateVirtualServiceDto; required

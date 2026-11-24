@@ -1,0 +1,11 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/transform-snippet.json
+# Copy to .maxoperf/transform-snippets/<slug>.yml. A reusable value transform; dataset columns and virtual-service
+# captures reference it by URI (`snippetId: maxoperf://transform-snippet/mask-email`).
+version: 1
+kind: transform-snippet
+key: mask-email
+name: mask-email
+workspace: Payments
+description: Keep the first character of the local part
+source: |
+  return value.replace(/^(.)[^@]*/, '$1***');

@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/test.json
+# Builder test (no script file): the HTTP request model the console builder edits, kept in git.
+version: 1
+key: builder-http
+name: "Example HTTP builder test"
+engineKind: taurus
+authoringMode: interactive
+interactiveKind: http
+httpRequests:
+  version: 1
+  requests:
+    - { method: GET, url: "https://example.com/", headers: [] }
+loadProfile: { virtualUsers: 5, agentCount: 1, rampUpSeconds: 5, durationSeconds: 30 }
+locationPlan: { rows: [{ kind: managed, cloudProvider: aws, region: us-east-1, runnerCount: 1, weight: 1 }] }
+tags: [example, builder]

@@ -1,0 +1,7 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/targets.json
+version: 1
+defaults: { workspace: Payments, project: Checkout }
+targets:
+  staging: { account: acn-0123456789, workspace: Payments-Staging, vars: { target_url: https://staging.shop.example.com } }
+  prod:    { account: acn-9876543210, workspace: Payments, vars: { target_url: https://shop.example.com },
+             adopt: { "maxoperf://test/checkout-soak": tst-0123456789 } }

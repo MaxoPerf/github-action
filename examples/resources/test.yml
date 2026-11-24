@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/test.json
+# Copy to .maxoperf/tests/<slug>.yml. A test bound to other resources by URI: `maxoperf://<kind>/<key>`, or
+# `/name:<name>`, `/id:<id>`, with `?workspace=` on the name form. Paths are repo-root-relative; adjust them.
+version: 1
+kind: test
+key: checkout-smoke
+name: Checkout smoke
+workspace: Payments
+project: Checkout
+engineKind: k6
+entrypoint: examples/tests/scripts/secured.js
+loadProfile: { virtualUsers: 25, agentCount: 1, rampUpSeconds: 5, durationSeconds: 30, maxVirtualUsersPerRunner: 25 }
+locationPlan: { rows: [{ kind: managed, cloudProvider: aws, region: us-east-1, runnerCount: 1, weight: 1 }] }
+config: [maxoperf://config/target-url]
+secrets: [maxoperf://secret/checkout-api-token]
+dataBindings: [maxoperf://dataset/users]
+tags: [example, smoke]

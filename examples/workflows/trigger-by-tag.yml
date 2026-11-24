@@ -1,0 +1,20 @@
+# Scenario: trigger existing tests by tag (no files needed in the repo). The tag value is an input of the manual run.
+name: perf-trigger-by-tag
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Run every test carrying this tag
+        default: smoke
+permissions:
+  contents: read
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: MaxoPerf/github-action@v1
+        with:
+          api-key: ${{ secrets.MAXOPERF_API_KEY }}
+          account-id: ${{ vars.MAXOPERF_ACCOUNT_ID }}
+          command: run
+          tags: ${{ inputs.tag }}

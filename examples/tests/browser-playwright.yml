@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/test.json
+# Browser test: a Playwright script on Chrome. `browsers` runs the same script on several browsers in parallel.
+version: 1
+key: browser-playwright
+name: "Example Playwright browser test"
+testKind: browser
+engineKind: playwright
+entrypoint: examples/tests/scripts/browser.spec.js
+browser: chrome
+recordingLayout: tiled
+loadProfile: { virtualUsers: 1, agentCount: 1, rampUpSeconds: 0, durationSeconds: 60 }
+locationPlan: { rows: [{ kind: managed, cloudProvider: aws, region: us-east-1, runnerCount: 1, weight: 1 }] }
+tags: [example, browser]

@@ -1,0 +1,8 @@
+# yaml-language-server: $schema=https://maxoperf.com/schemas/resources/v1/project.json
+# Copy to .maxoperf/projects/<slug>.yml. Tests name their project with `project: Checkout`.
+version: 1
+kind: project
+key: checkout
+name: Checkout
+workspace: Payments
+description: Load tests for the checkout flow
