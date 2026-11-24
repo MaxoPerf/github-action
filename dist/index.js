@@ -37217,6 +37217,7 @@ var testHandler = {
     }
     const models = entry22?.state?.["models"] ?? {};
     for (const [k, m2] of Object.entries(models)) if (deepEqual(out2[k], m2.sent) && deepEqual(cmp[k], m2.back)) out2[k] = cmp[k];
+    if (want["authoringMode"] === "interactive") delete out2["engineKind"];
     if (Array.isArray(out2["failureCriteria"])) out2["failureCriteria"] = storedIds(out2["failureCriteria"], cmp["failureCriteria"]);
     if (vario) {
       const lm = cmp["members"] ?? [];
