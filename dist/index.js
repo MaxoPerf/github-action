@@ -36987,6 +36987,17 @@ var CREATE_KEYS = ["testKind", "engineKind", "loadProfile", "failureCriteria", "
 var PATCH_KEYS = ["engineKind", "loadProfile", "failureCriteria", "failureCriteriaSettings", "recordingLayout", "runnerSize", "browser", "browsers", "makeJmxControllable", "captureErrorBodies", "authoringMode", "interactiveKind", "httpRequests", "browserSteps"];
 var pick7 = (src, keys) => Object.fromEntries(keys.filter((k) => src[k] !== void 0).map((k) => [k, src[k]]));
 var location = (spec) => spec["locationPlan"] ? { locationPlan: spec["locationPlan"] } : spec["privateDatacenterId"] !== void 0 ? { privateDatacenterId: spec["privateDatacenterId"] } : {};
+var isCopied = (c) => c["source"] === "imported-k6" || c["source"] === "imported-taurus";
+var withCopies = (rows, stored) => {
+  const live = stored ?? [];
+  const out2 = storedIds(Array.isArray(rows) ? rows.filter((r) => !(isObj2(r) && isCopied(r))) : rows, live.filter((c) => !isCopied(c)));
+  return Array.isArray(out2) ? [...out2, ...live.filter(isCopied)] : out2;
+};
+function settingsOf(spec, live) {
+  if (!isObj2(spec["failureCriteriaSettings"])) return void 0;
+  const { scriptThresholds: stored, ...rest } = live ?? {};
+  return { ...rest, ...stored != null ? { scriptThresholds: stored } : {}, ...spec["failureCriteriaSettings"] };
+}
 var get3 = async (client, path) => (await client.request("GET", path)).data;
 async function mapLimit(items, limit, fn) {
   const out2 = new Array(items.length);
@@ -37143,8 +37154,10 @@ async function syncInner(ctx, doc, live, report, st) {
     if (d2.role === "entrypoint") entryFileId = id;
   }
   if (clearUserRows && entryFileId) await client.request("POST", `/v1/tests/${testId2}/files/${entryFileId}/revalidate`);
+  const cur = declared || isObj2(spec["failureCriteriaSettings"]) ? await get3(client, `/v1/tests/${testId2}`) : detail;
+  const settings = settingsOf(spec, cur.failureCriteriaSettings);
   await client.request("PATCH", `/v1/tests/${testId2}`, {
-    body: { ...revert(spec, detail), ...pick7({ ...spec, failureCriteria: storedIds(spec["failureCriteria"], detail.failureCriteria) }, PATCH_KEYS.filter((k) => declared || k !== "failureCriteria")), ...location(spec), tags: spec["tags"] ?? [], ...live && live.name !== spec["name"] ? { name: spec["name"] } : {}, ...git ? { gitSource: git } : {} }
+    body: { ...revert(spec, detail), ...pick7({ ...spec, failureCriteria: withCopies(spec["failureCriteria"], cur.failureCriteria), ...settings ? { failureCriteriaSettings: settings } : {} }, PATCH_KEYS.filter((k) => declared || k !== "failureCriteria")), ...location(spec), tags: spec["tags"] ?? [], ...live && live.name !== spec["name"] ? { name: spec["name"] } : {}, ...git ? { gitSource: git } : {} }
   });
   await syncAttachments(ctx, doc, live, testId2, ws2);
   const after = await get3(client, `/v1/tests/${testId2}`);
@@ -37218,7 +37231,7 @@ var testHandler = {
     const models = entry22?.state?.["models"] ?? {};
     for (const [k, m2] of Object.entries(models)) if (deepEqual(out2[k], m2.sent) && deepEqual(cmp[k], m2.back)) out2[k] = cmp[k];
     if (want["authoringMode"] === "interactive") delete out2["engineKind"];
-    if (Array.isArray(out2["failureCriteria"])) out2["failureCriteria"] = storedIds(out2["failureCriteria"], cmp["failureCriteria"]);
+    if (Array.isArray(out2["failureCriteria"])) out2["failureCriteria"] = withCopies(out2["failureCriteria"], cmp["failureCriteria"]);
     if (vario) {
       const lm = cmp["members"] ?? [];
       out2["members"] = out2["members"].map((m2, i) => m2["failureCriteria"] ? { ...m2, failureCriteria: storedIds(m2["failureCriteria"], lm[i]?.["failureCriteria"]) } : m2);
